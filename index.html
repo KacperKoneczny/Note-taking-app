@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freeform Notes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Fixed bar across the top. Formatting buttons get added here in Phase 2. -->
+  <header id="toolbar">
+    <span class="app-title">Freeform Notes</span>
+
+    <div class="toolbar-spacer"></div>
+
+    <div class="toolbar-group" aria-label="Zoom">
+      <button type="button" id="zoom-out" title="Zoom out">−</button>
+      <button type="button" id="zoom-reset" title="Reset zoom to 100%">100%</button>
+      <button type="button" id="zoom-in" title="Zoom in">+</button>
+    </div>
+
+    <span id="save-status" aria-live="polite"></span>
+  </header>
+
+  <!-- The visible area. Everything you write lives inside #world,
+       which gets moved and scaled when you pan and zoom (see js/canvas.js). -->
+  <main id="viewport">
+    <div id="world"></div>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

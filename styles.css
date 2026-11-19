@@ -1,0 +1,230 @@
+/* ==========================================================
+   Theme: change colors, fonts and sizes here.
+   ========================================================== */
+:root {
+  --bg: #1e1f22;              /* canvas background */
+  --toolbar-bg: #2b2d31;
+  --toolbar-border: #3a3c42;
+  --text: #e3e3e3;            /* note text */
+  --muted: #9a9ca3;           /* secondary text, like "Saved" */
+  --accent: #5b8cff;          /* outline of a selected text box */
+  --error: #ff6b6b;
+  --button-bg: #383a40;
+  --button-hover: #45474e;
+
+  --note-hover-outline: rgba(255, 255, 255, 0.12);
+  --note-edit-outline: rgba(255, 255, 255, 0.25);
+  --handle-color: rgba(255, 255, 255, 0.18);
+  --handle-hover: rgba(255, 255, 255, 0.4);
+
+  --toolbar-height: 44px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --note-font-size: 16px;
+  --note-line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden; /* the canvas handles its own scrolling */
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
+
+/* ==========================================================
+   Toolbar
+   ========================================================== */
+#toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--toolbar-height);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--toolbar-border);
+  z-index: 10;
+  user-select: none;
+}
+
+.app-title {
+  font-weight: 600;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 4px;
+}
+
+#toolbar button {
+  min-width: 32px;
+  height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#toolbar button:hover {
+  background: var(--button-hover);
+}
+
+#zoom-reset {
+  min-width: 56px;
+}
+
+#save-status {
+  min-width: 70px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+}
+
+#save-status.error {
+  color: var(--error);
+}
+
+/* ==========================================================
+   Canvas
+   ========================================================== */
+#viewport {
+  position: fixed;
+  top: var(--toolbar-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  cursor: text;      /* hints that you can click anywhere to write */
+  user-select: none; /* dragging empty space pans instead of selecting text */
+}
+
+/* Holding Space or dragging shows a hand cursor everywhere, even over notes */
+#viewport.space-held,
+#viewport.space-held * {
+  cursor: grab !important;
+}
+
+#viewport.panning,
+#viewport.panning * {
+  cursor: grabbing !important;
+}
+
+/* #world has no size of its own. Notes are placed inside it with left/top,
+   and the whole thing is moved and scaled with a CSS transform. */
+#world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+}
+
+/* ==========================================================
+   Text boxes
+   ========================================================== */
+.note {
+  position: absolute;
+  border-radius: 4px;
+}
+
+.note:hover {
+  outline: 1px dashed var(--note-hover-outline);
+}
+
+.note:focus-within {
+  outline: 1px solid var(--note-edit-outline);
+}
+
+.note.selected {
+  outline: 2px solid var(--accent);
+}
+
+.note-content {
+  min-height: calc(var(--note-font-size) * var(--note-line-height) + 4px);
+  padding: 2px 4px;
+  font-size: var(--note-font-size);
+  line-height: var(--note-line-height);
+  overflow-wrap: anywhere;
+  outline: none;
+  cursor: text;
+  user-select: text;
+}
+
+/* Move handle: a bar just above the box. The element is taller than the
+   visible bar so there's no gap between the box and the handle. */
+.note-handle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  height: 14px;
+  cursor: move;
+}
+
+.note-handle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--handle-color);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.note-handle:hover::before {
+  background: var(--handle-hover);
+}
+
+/* Resize handle: a strip along the right edge */
+.note-resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -5px;
+  width: 10px;
+  cursor: ew-resize;
+}
+
+.note-resize::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--handle-color);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+/* Show both handles while hovering, typing in, or selecting a box */
+.note:hover .note-handle::before,
+.note:focus-within .note-handle::before,
+.note.selected .note-handle::before,
+.note:hover .note-resize::after,
+.note:focus-within .note-resize::after,
+.note.selected .note-resize::after {
+  opacity: 1;
+}
