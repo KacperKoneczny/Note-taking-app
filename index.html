@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- data-theme="dark": the app always opens in dark mode (see js/theme.js) -->
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,72 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Fixed bar across the top. Formatting buttons get added here in Phase 2. -->
+  <!-- Fixed bar across the top -->
   <header id="toolbar">
     <span class="app-title">Freeform Notes</span>
+
+    <!-- Formatting: works on the text box you're typing in, greyed out otherwise.
+         data-action names are wired up in js/toolbar.js. -->
+    <div class="toolbar-group disabled" id="format-tools">
+      <button type="button" data-action="bold" title="Bold (Cmd+B)"><b>B</b></button>
+      <button type="button" data-action="italic" title="Italic (Cmd+I)"><i>I</i></button>
+      <button type="button" data-action="underline" title="Underline (Cmd+U)"><u>U</u></button>
+      <button type="button" data-action="strikethrough" title="Strikethrough (Cmd+Shift+X)"><s>S</s></button>
+
+      <span class="toolbar-divider"></span>
+
+      <button type="button" data-action="heading1" title="Big heading (Cmd+Option+1)">H1</button>
+      <button type="button" data-action="heading2" title="Small heading (Cmd+Option+2)">H2</button>
+      <button type="button" data-action="normal" title="Normal text (Cmd+Option+0)">¶</button>
+
+      <span class="toolbar-divider"></span>
+
+      <!-- Text size: select text, then type a size and press Enter, or use − / + (see js/textsize.js) -->
+      <div class="text-size">
+        <button type="button" data-action="textSmaller" title="Smaller text (Cmd+Shift+,)">−</button>
+        <input type="number" id="text-size" aria-label="Text size"
+               title="Text size: select some text, type a size, then press Enter">
+        <button type="button" data-action="textBigger" title="Bigger text (Cmd+Shift+.)">+</button>
+      </div>
+
+      <span class="toolbar-divider"></span>
+
+      <button type="button" data-action="bulletList" title="Bullet list (Cmd+Shift+8)">•</button>
+      <button type="button" data-action="numberedList" title="Numbered list (Cmd+Shift+7)">1.</button>
+      <button type="button" data-action="checklist" title="Checklist (Cmd+Shift+9)">☑</button>
+
+      <span class="toolbar-divider"></span>
+
+      <div class="popover-anchor">
+        <button type="button" data-popover="text-color-menu" title="Text color (select some text first)">
+          <span class="icon-text-color">A</span>
+        </button>
+        <div class="popover" id="text-color-menu" hidden></div>
+      </div>
+      <div class="popover-anchor">
+        <button type="button" data-popover="highlight-menu" title="Highlight (select some text first)">
+          <span class="icon-highlight">ab</span>
+        </button>
+        <div class="popover" id="highlight-menu" hidden></div>
+      </div>
+
+      <span class="toolbar-divider"></span>
+
+      <div class="popover-anchor">
+        <button type="button" data-popover="table-menu" title="Insert table">⊞ Table</button>
+        <div class="popover" id="table-menu" hidden></div>
+      </div>
+    </div>
+
+    <!-- Only shown while the text cursor is inside a table -->
+    <div class="toolbar-group" id="table-tools" hidden>
+      <span class="toolbar-divider"></span>
+      <button type="button" data-action="addRow" title="Add a row below">+ Row</button>
+      <button type="button" data-action="addColumn" title="Add a column to the right">+ Col</button>
+      <button type="button" data-action="deleteRow" title="Delete this row">− Row</button>
+      <button type="button" data-action="deleteColumn" title="Delete this column">− Col</button>
+      <button type="button" data-action="deleteTable" title="Delete the whole table">✕ Table</button>
+    </div>
 
     <div class="toolbar-spacer"></div>
 
@@ -18,6 +82,8 @@
       <button type="button" id="zoom-reset" title="Reset zoom to 100%">100%</button>
       <button type="button" id="zoom-in" title="Zoom in">+</button>
     </div>
+
+    <button type="button" id="theme-toggle" title="Switch to light mode">☀</button>
 
     <span id="save-status" aria-live="polite"></span>
   </header>

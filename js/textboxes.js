@@ -16,7 +16,8 @@
  *
  * Behavior:
  *   - Clicking empty space creates a box (canvas.js detects the click).
- *   - A box with no text deletes itself when you click away.
+ *   - A box with no text deletes itself when you click away
+ *     (unless it holds a table or checklist).
  *   - Escape stops typing.
  *   - Click a box's handle to select it, then press Delete or Backspace to remove it.
  */
@@ -216,6 +217,8 @@ function placeOnScreen(note, box) {
   note.style.width = `${box.width}px`;
 }
 
+/** A box counts as empty if it has no text, unless it holds a table or checklist. */
 function isEmpty(note) {
-  return note.querySelector('.note-content').textContent.trim() === '';
+  const content = note.querySelector('.note-content');
+  return content.textContent.trim() === '' && !content.querySelector('table, .checklist');
 }

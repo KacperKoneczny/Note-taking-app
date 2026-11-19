@@ -4,11 +4,23 @@
  *   storage.js    loads and saves the page
  *   canvas.js     panning and zooming
  *   textboxes.js  the boxes you type in
+ *   toolbar.js    formatting buttons and shortcuts, using:
+ *     editing.js    shared helpers
+ *     colors.js     text colors and highlights
+ *     lists.js      bullet lists, numbered lists, checklists
+ *     tables.js     tables
+ *     textsize.js   the text size box
+ *   theme.js      the dark/light mode switch
  */
 
 import { loadStartupPage, savePage } from './storage.js';
 import { setupCanvas } from './canvas.js';
 import { setupTextBoxes } from './textboxes.js';
+import { setupToolbar } from './toolbar.js';
+import { setupColors } from './colors.js';
+import { setupLists } from './lists.js';
+import { setupTables } from './tables.js';
+import { setupTheme } from './theme.js';
 
 const SAVE_DELAY_MS = 500; // wait this long after the last change before saving
 
@@ -71,6 +83,11 @@ function updateZoomLabel() {
 
 // ---------- Connect the pieces ----------
 
+// These listen for clicks, keys and typing inside every text box on the canvas
+setupColors({ world });
+setupLists({ world });
+setupTables({ world });
+
 const textBoxes = setupTextBoxes({
   world,
   page,
@@ -95,11 +112,9 @@ updateZoomLabel();
 
 // ---------- Toolbar ----------
 
+setupToolbar({ toolbar });
+setupTheme({ button: document.getElementById('theme-toggle') });
+
 document.getElementById('zoom-in').addEventListener('click', () => canvas.zoomIn());
 document.getElementById('zoom-out').addEventListener('click', () => canvas.zoomOut());
 zoomLabel.addEventListener('click', () => canvas.resetZoom());
-
-// Clicking a toolbar button shouldn't move the text cursor out of the box you're typing in
-toolbar.addEventListener('mousedown', (event) => {
-  if (event.target.closest('button')) event.preventDefault();
-});
