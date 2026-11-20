@@ -1,7 +1,8 @@
 /*
  * app.js
  * Starts the app and connects the pieces together:
- *   storage.js    loads and saves the page
+ *   storage.js    loads and saves pages
+ *   pages.js      the pages sidebar and the page name in the toolbar
  *   canvas.js     panning and zooming
  *   textboxes.js  the boxes you type in
  *   toolbar.js    formatting buttons and shortcuts, using:
@@ -13,7 +14,8 @@
  *   theme.js      the dark/light mode switch
  */
 
-import { loadStartupPage, savePage } from './storage.js';
+import { loadStartupPage, savePage, rememberOpenPage } from './storage.js';
+import { setupPages } from './pages.js';
 import { setupCanvas } from './canvas.js';
 import { setupTextBoxes } from './textboxes.js';
 import { setupToolbar } from './toolbar.js';
@@ -23,6 +25,7 @@ import { setupTables } from './tables.js';
 import { setupTheme } from './theme.js';
 
 const SAVE_DELAY_MS = 500; // wait this long after the last change before saving
+const SAVE_ERROR = 'Not saved: browser storage is full or blocked';
 
 const viewport = document.getElementById('viewport');
 const world = document.getElementById('world');
@@ -30,7 +33,8 @@ const toolbar = document.getElementById('toolbar');
 const zoomLabel = document.getElementById('zoom-reset');
 const saveStatus = document.getElementById('save-status');
 
-const page = loadStartupPage();
+let page = loadStartupPage(); // the page on screen. Changes when you open another page.
+rememberOpenPage(page.id);
 
 // ---------- Saving ----------
 
@@ -43,15 +47,18 @@ function scheduleSave() {
   showStatus('Saving…');
 }
 
+/** Saves the open page right away. Returns false if the browser refused. */
 function saveNow() {
   clearTimeout(saveTimer);
   saveTimer = null;
   try {
     savePage(page);
     showStatus('Saved');
+    return true;
   } catch (err) {
     console.error('Save failed', err);
-    showStatus('Not saved: browser storage is full or blocked', true);
+    showStatus(SAVE_ERROR, true);
+    return false;
   }
 }
 
@@ -109,6 +116,33 @@ const canvas = setupCanvas({
 });
 
 updateZoomLabel();
+
+/**
+ * Puts a different page on the canvas, with its own pan and zoom.
+ * pages.js saves the old page first (or is deleting it), so a save that's
+ * still waiting belongs to the old page and is dropped.
+ */
+function showPage(newPage) {
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  showStatus('');
+  page = newPage;
+  rememberOpenPage(page.id);
+  textBoxes.showPage(page);
+  canvas.setView(page.view);
+  updateZoomLabel();
+}
+
+setupPages({
+  toggleButton: document.getElementById('sidebar-toggle'),
+  pageList: document.getElementById('page-list'),
+  newPageButton: document.getElementById('new-page'),
+  nameLabel: document.getElementById('page-name'),
+  getOpenPage: () => page,
+  saveOpenPage: saveNow,
+  showPage,
+  onSaveError: () => showStatus(SAVE_ERROR, true),
+});
 
 // ---------- Toolbar ----------
 

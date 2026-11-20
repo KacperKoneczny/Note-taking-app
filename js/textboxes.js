@@ -32,14 +32,27 @@ const DRAG_TOLERANCE = 3;  // pixels the mouse can move before a click counts as
 const CLICK_OFFSET_X = 4;
 const CLICK_OFFSET_Y = 14;
 
-export function setupTextBoxes({ world, page, getZoom, isTyping, onChange }) {
+export function setupTextBoxes({ world, page: firstPage, getZoom, isTyping, onChange }) {
   const elements = new Map(); // box id -> its .note element
+  let page = null;            // the page on screen. Replaced by showPage when you open another page.
   let selectedId = null;
 
-  // Draw the saved boxes, then clean up any empty ones left over from last time
-  for (const box of page.textBoxes) addToScreen(box);
-  for (const box of [...page.textBoxes]) {
-    if (isEmpty(elements.get(box.id))) removeBox(box.id);
+  showPage(firstPage);
+
+  // ---------- Showing a page ----------
+
+  /** Clears the canvas and shows the boxes of `newPage` instead. */
+  function showPage(newPage) {
+    for (const note of elements.values()) note.remove();
+    elements.clear();
+    selectedId = null;
+    page = newPage;
+
+    // Draw the saved boxes, then clean up any empty ones left over from last time
+    for (const box of page.textBoxes) addToScreen(box);
+    for (const box of [...page.textBoxes]) {
+      if (isEmpty(elements.get(box.id))) removeBox(box.id);
+    }
   }
 
   // ---------- Creating and removing ----------
@@ -208,7 +221,7 @@ export function setupTextBoxes({ world, page, getZoom, isTyping, onChange }) {
 
   // ---------- What other files can use ----------
 
-  return { createAt };
+  return { createAt, showPage };
 }
 
 function placeOnScreen(note, box) {

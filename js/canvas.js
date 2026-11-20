@@ -22,11 +22,19 @@ const ZOOM_STEP = 1.2;          // how much the + and − buttons zoom by
 const WHEEL_ZOOM_SPEED = 0.01;  // higher = faster Cmd+wheel zooming
 const CLICK_TOLERANCE = 4;      // pixels the mouse can move before a click counts as a drag
 
-export function setupCanvas({ viewport, world, view, isTyping, onViewChange, onEmptyClick }) {
+export function setupCanvas({ viewport, world, view: firstView, isTyping, onViewChange, onEmptyClick }) {
+  let view = firstView; // the open page's view. Replaced by setView when you open another page.
   let spaceHeld = false;
   let pan = null; // details of the drag in progress, or null when not dragging
 
   render();
+
+  /** Switches to another page's pan and zoom. Called when you open a different page. */
+  function setView(newView) {
+    view = newView;
+    endPan();
+    render();
+  }
 
   // ---------- Positions and transform ----------
 
@@ -195,6 +203,7 @@ export function setupCanvas({ viewport, world, view, isTyping, onViewChange, onE
   // ---------- What other files can use ----------
 
   return {
+    setView,
     screenToWorld,
     getZoom: () => view.zoom,
     zoomIn: () => zoomAroundCenter(view.zoom * ZOOM_STEP),

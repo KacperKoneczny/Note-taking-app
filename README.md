@@ -26,6 +26,19 @@ Always use the same browser and the same address (usually `http://127.0.0.1:3000
 
 Pasted text is pasted as plain text, so it matches your other notes.
 
+### Pages
+
+The sidebar on the left lists your pages. Each page has its own notes and remembers where you were panned and zoomed to.
+
+| Action | How |
+|---|---|
+| Open a page | Click it in the sidebar. The page you were on is saved first. |
+| New page | **+ New page** at the top of the sidebar. It's added at the bottom of the list. |
+| Rename a page | Double-click its name in the sidebar, or the page name in the middle of the toolbar. Enter or clicking away saves, Escape cancels. |
+| Reorder pages | Drag a page up or down the list. Pages start in the order you made them. |
+| Delete a page | Hover over it and click ✕, then confirm. Deleting your only page leaves a new empty one. |
+| Hide / show the sidebar | The ☰ button at the top left. The sidebar is always showing when the app opens. |
+
 ### Formatting
 
 The formatting buttons work on the text box you're typing in, and are greyed out otherwise. A button lights up when its formatting is on where the cursor is.
@@ -41,9 +54,9 @@ The formatting buttons work on the text box you're typing in, and are greyed out
 | Numbered list | 1. | Cmd+Shift+7 |
 | Checklist | ☑ (click a checkbox to tick it) | Cmd+Shift+9 |
 | Text color, highlight | A, ab (select text first) | |
+| Table | ⊞ Table, then pick a size | |
 
 The size box always shows the size of the text where the cursor is. Normal text is 16 and H1 is about 26.
-| Table | ⊞ Table, then pick a size | |
 
 - **Lists:** Tab and Shift+Tab indent and outdent list items.
 - **Tables:** Tab and Shift+Tab move between cells, and Tab in the last cell adds a row. While the cursor is in a table, the toolbar shows buttons to add or delete rows and columns, or delete the table.
@@ -54,12 +67,13 @@ The size box always shows the size of the text where the cursor is. Normal text 
 
 | File | What it does |
 |---|---|
-| `index.html` | Page layout: toolbar buttons and canvas |
+| `index.html` | Page layout: toolbar buttons, pages sidebar and canvas |
 | `styles.css` | Colors, fonts and layout. Dark and light mode colors are variables at the top. |
 | `js/app.js` | Starts the app, connects the other files, handles autosave |
 | `js/canvas.js` | Panning, zooming, and detecting clicks on empty space |
-| `js/textboxes.js` | Creating, editing, moving, resizing and deleting text boxes |
+| `js/textboxes.js` | Creating, editing, moving, resizing and deleting text boxes, and swapping them when you open another page |
 | `js/storage.js` | All saving and loading |
+| `js/pages.js` | The pages sidebar: opening, adding, renaming, reordering and deleting pages, plus the page name in the toolbar |
 | `js/toolbar.js` | Formatting buttons, pop-up menus and keyboard shortcuts |
 | `js/editing.js` | Small helpers shared by the formatting files |
 | `js/colors.js` | Text colors and highlights |
@@ -71,6 +85,8 @@ The size box always shows the size of the text where the cursor is. Normal text 
 ## Common changes
 
 - **Colors and fonts:** the variables at the top of `styles.css`. Dark mode is `:root`, light mode is `:root[data-theme="light"]`.
+- **Sidebar width:** `--sidebar-width` at the top of `styles.css`. Its background is `--sidebar-bg` (one for each mode).
+- **Longest page name:** `MAX_NAME_LENGTH` in `js/pages.js`.
 - **Add a text/highlight color:** add its name to `COLOR_NAMES` in `js/colors.js`, then add `--text-<name>` and `--highlight-<name>` to both modes in `styles.css`.
 - **Keyboard shortcuts:** `SHORTCUTS` in `js/toolbar.js`.
 - **Largest table in the picker:** `MAX_TABLE_ROWS` and `MAX_TABLE_COLUMNS` in `js/tables.js`.
@@ -81,10 +97,13 @@ The size box always shows the size of the text where the cursor is. Normal text 
 
 ## Where notes are saved
 
-Notes are saved in the browser's localStorage, about half a second after each change:
+Notes are saved in the browser's localStorage, about half a second after each change, and right away when you switch pages:
 
+- `freeform-notes:pages` is the list of pages in the sidebar, in your order.
 - `freeform-notes:page:<id>` holds one page as JSON.
-- `freeform-notes:last-page` remembers which page was open.
+- `freeform-notes:last-page` remembers which page was open, so it opens again next time.
+
+Notes saved before the sidebar existed show up in the list automatically.
 
 Clearing your browser's site data deletes your notes. A JSON export/import button for backups is planned (see below).
 
@@ -94,6 +113,6 @@ To look at the saved data, open the browser's developer tools and go to Applicat
 
 1. ✅ Canvas and text boxes: dark background, pan and zoom, create/move/resize/delete boxes, autosave
 2. ✅ Dark/light mode switch and formatting toolbar: bold, italic, underline, strikethrough, headings, lists, checklists, text color, highlight, tables
-3. Pages sidebar: multiple note pages you can create, rename, delete and switch between
+3. ✅ Pages sidebar: multiple note pages you can create, rename, reorder, delete and switch between
 4. Drawing: pen with color and size, eraser
 5. Export and polish: PDF export, JSON export/import, undo/redo, "jump back to my notes" button

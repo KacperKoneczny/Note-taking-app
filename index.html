@@ -10,6 +10,7 @@
 <body>
   <!-- Fixed bar across the top -->
   <header id="toolbar">
+    <button type="button" id="sidebar-toggle" title="Hide pages" aria-controls="sidebar" aria-expanded="true">☰</button>
     <span class="app-title">Freeform Notes</span>
 
     <!-- Formatting: works on the text box you're typing in, greyed out otherwise.
@@ -75,7 +76,10 @@
       <button type="button" data-action="deleteTable" title="Delete the whole table">✕ Table</button>
     </div>
 
-    <div class="toolbar-spacer"></div>
+    <!-- The open page's name, centered in the free space. Double-click to rename it (see js/pages.js). -->
+    <div class="page-name-area">
+      <span id="page-name"></span>
+    </div>
 
     <div class="toolbar-group" aria-label="Zoom">
       <button type="button" id="zoom-out" title="Zoom out">−</button>
@@ -87,6 +91,15 @@
 
     <span id="save-status" aria-live="polite"></span>
   </header>
+
+  <!-- Pages sidebar. Always starts open; ☰ in the toolbar hides it (see js/pages.js). -->
+  <aside id="sidebar" aria-label="Pages">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Pages</span>
+      <button type="button" id="new-page" title="Add an empty page at the bottom">+ New page</button>
+    </div>
+    <ul id="page-list"></ul>
+  </aside>
 
   <!-- The visible area. Everything you write lives inside #world,
        which gets moved and scaled when you pan and zoom (see js/canvas.js). -->
