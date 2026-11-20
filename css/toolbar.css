@@ -1,0 +1,170 @@
+/*
+ * toolbar.css
+ * The fixed bar across the top: buttons, the text size box and the save
+ * status (see js/toolbar.js). Its pop-up menus are in popovers.css, and the
+ * page name in the middle is in pages.css.
+ */
+
+#toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--toolbar-height);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--toolbar-border);
+  z-index: 10;
+  user-select: none;
+}
+
+.app-title {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#sidebar-toggle {
+  font-size: 16px;
+}
+
+/* Fills the free space between the formatting buttons and the zoom buttons,
+   which also pushes the zoom buttons to the right */
+.page-name-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* display: flex above would otherwise beat the hidden attribute */
+.toolbar-group[hidden] {
+  display: none;
+}
+
+/* Formatting buttons are greyed out until you're typing in a text box */
+.toolbar-group.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.toolbar-divider {
+  flex-shrink: 0;
+  width: 1px;
+  height: 20px;
+  margin: 0 2px;
+  background: var(--toolbar-border);
+}
+
+#toolbar button {
+  flex-shrink: 0;      /* keep buttons full size... */
+  white-space: nowrap; /* ...and their labels on one line */
+  min-width: 32px;
+  height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#toolbar button:hover {
+  background: var(--button-hover);
+}
+
+/* Shows that the formatting is on where the text cursor is */
+#toolbar button.active {
+  background: var(--button-active);
+}
+
+#zoom-reset {
+  min-width: 56px;
+}
+
+#theme-toggle {
+  font-size: 16px;
+}
+
+/* The bullet character is tiny at normal size */
+#toolbar [data-action="bulletList"] {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.icon-text-color {
+  font-weight: 600;
+  border-bottom: 3px solid var(--text-red);
+  line-height: 1;
+}
+
+.icon-highlight {
+  padding: 0 3px;
+  border-radius: 3px;
+  background: var(--highlight-yellow);
+}
+
+/* Text size box:  − [ 16 ] +  */
+.text-size {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+#toolbar .text-size button {
+  min-width: 26px;
+  padding: 0 6px;
+}
+
+#text-size {
+  width: 46px;
+  height: 28px;
+  padding: 0 4px;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: center;
+  appearance: textfield; /* hide the browser's up/down arrows; − and + do that job */
+}
+
+#text-size::-webkit-inner-spin-button,
+#text-size::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#text-size:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+#save-status {
+  min-width: 60px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+}
+
+#save-status.error {
+  color: var(--error);
+}
+
+/* Hide the title on narrower windows to make room for the buttons and the page name */
+@media (max-width: 1600px) {
+  .app-title {
+    display: none;
+  }
+}

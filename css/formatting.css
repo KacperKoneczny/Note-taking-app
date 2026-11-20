@@ -1,0 +1,81 @@
+/*
+ * formatting.css
+ * Formatting inside text boxes: headings, lists, checklists and tables.
+ * Text colors and highlights are named variables in themes.css.
+ */
+
+.note-content h1,
+.note-content h2 {
+  margin: 0.2em 0;
+  line-height: 1.25;
+}
+
+.note-content h1 {
+  font-size: 1.6em;
+}
+
+.note-content h2 {
+  font-size: 1.25em;
+}
+
+.note-content ul,
+.note-content ol {
+  margin: 0.2em 0;
+  padding-left: 1.5em;
+}
+
+/* Checklists: a bullet list with class="checklist". The checkbox is drawn
+   with ::before, and a ticked item has data-checked="true" (see js/lists.js). */
+.note-content .checklist,
+.note-content .checklist ul {
+  list-style: none;
+  padding-left: 0.2em;
+}
+
+.note-content .checklist li {
+  position: relative;
+  padding-left: 1.6em;
+}
+
+.note-content .checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.35em;
+  width: 1em;
+  height: 1em;
+  border: 1.5px solid var(--muted);
+  border-radius: 3px;
+  font-size: 0.85em; /* sizes the box and the tick together */
+  line-height: 1em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.note-content .checklist li[data-checked="true"]::before {
+  content: "✓";
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.note-content .checklist li[data-checked="true"] {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+/* Tables */
+.note-content table {
+  width: 100%;
+  margin: 4px 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.note-content td,
+.note-content th {
+  padding: 4px 6px;
+  border: 1px solid var(--table-border);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}

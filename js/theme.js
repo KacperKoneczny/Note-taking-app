@@ -3,7 +3,7 @@
  * The dark/light mode switch.
  *
  * The app always opens in dark mode (index.html starts with
- * <html data-theme="dark">). The switch changes data-theme, and styles.css
+ * <html data-theme="dark">). The switch changes data-theme, and css/themes.css
  * swaps the colors. The choice isn't saved, so a reload goes back to dark.
  */
 

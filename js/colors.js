@@ -4,11 +4,11 @@
  *
  * Colors are saved by name instead of as an exact shade. Red text is saved as
  *   <span style="color: var(--text-red)">
- * and styles.css gives --text-red one shade in dark mode and another in
+ * and css/themes.css gives --text-red one shade in dark mode and another in
  * light mode, so notes stay readable in both.
  *
  * To add a color: add its name to COLOR_NAMES, then add --text-<name> and
- * --highlight-<name> to BOTH themes at the top of styles.css.
+ * --highlight-<name> to BOTH themes in css/themes.css.
  */
 
 import { getActiveContent, notifyChanged } from './editing.js';

@@ -68,7 +68,14 @@ The size box always shows the size of the text where the cursor is. Normal text 
 | File | What it does |
 |---|---|
 | `index.html` | Page layout: toolbar buttons, pages sidebar and canvas |
-| `styles.css` | Colors, fonts and layout. Dark and light mode colors are variables at the top. |
+| `css/themes.css` | Colors, fonts and sizes as variables, for dark mode and light mode |
+| `css/base.css` | Page-wide basics: background, text color, font |
+| `css/toolbar.css` | The top bar: buttons, text size box, save status |
+| `css/popovers.css` | The toolbar's pop-up menus: colors and the table size picker |
+| `css/pages.css` | The pages sidebar, the page name in the toolbar, and the rename field |
+| `css/canvas.css` | The canvas you pan and zoom |
+| `css/textboxes.css` | Text boxes and their move and resize handles |
+| `css/formatting.css` | Headings, lists, checklists and tables inside text boxes |
 | `js/app.js` | Starts the app, connects the other files, handles autosave |
 | `js/canvas.js` | Panning, zooming, and detecting clicks on empty space |
 | `js/textboxes.js` | Creating, editing, moving, resizing and deleting text boxes, and swapping them when you open another page |
@@ -84,16 +91,17 @@ The size box always shows the size of the text where the cursor is. Normal text 
 
 ## Common changes
 
-- **Colors and fonts:** the variables at the top of `styles.css`. Dark mode is `:root`, light mode is `:root[data-theme="light"]`.
-- **Sidebar width:** `--sidebar-width` at the top of `styles.css`. Its background is `--sidebar-bg` (one for each mode).
+- **Colors and fonts:** the variables in `css/themes.css`. Dark mode is `:root`, light mode is `:root[data-theme="light"]`.
+- **Sidebar width:** `--sidebar-width` in `css/themes.css`. Its background is `--sidebar-bg` (one for each mode).
 - **Longest page name:** `MAX_NAME_LENGTH` in `js/pages.js`.
-- **Add a text/highlight color:** add its name to `COLOR_NAMES` in `js/colors.js`, then add `--text-<name>` and `--highlight-<name>` to both modes in `styles.css`.
+- **Add a text/highlight color:** add its name to `COLOR_NAMES` in `js/colors.js`, then add `--text-<name>` and `--highlight-<name>` to both modes in `css/themes.css`.
 - **Keyboard shortcuts:** `SHORTCUTS` in `js/toolbar.js`.
 - **Largest table in the picker:** `MAX_TABLE_ROWS` and `MAX_TABLE_COLUMNS` in `js/tables.js`.
 - **Smallest and largest text size:** `MIN_TEXT_SIZE` and `MAX_TEXT_SIZE` in `js/textsize.js`.
 - **New box width, smallest box width:** `DEFAULT_WIDTH` and `MIN_WIDTH` at the top of `js/textboxes.js`.
 - **Zoom limits and zoom speed:** `MIN_ZOOM`, `MAX_ZOOM`, `ZOOM_STEP` and `WHEEL_ZOOM_SPEED` at the top of `js/canvas.js`.
 - **How long to wait before saving:** `SAVE_DELAY_MS` in `js/app.js`.
+- **Adding a new style file:** add a `<link>` for it in `index.html`. Files lower in the list win when two rules clash, and `css/themes.css` must stay first because the others use its colors.
 
 ## Where notes are saved
 

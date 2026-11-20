@@ -1,0 +1,72 @@
+/*
+ * popovers.css
+ * The toolbar's pop-up menus: text color, highlight and the table size picker.
+ */
+
+.popover-anchor {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  padding: 8px;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 8px;
+  background: var(--toolbar-bg);
+  box-shadow: var(--popover-shadow);
+}
+
+/* display: block on menus would otherwise beat the hidden attribute */
+.popover[hidden] {
+  display: none;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(7, 24px);
+  gap: 6px;
+}
+
+#toolbar .swatch {
+  min-width: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 50%;
+}
+
+/* The "no color" swatch: a diagonal line */
+#toolbar .swatch.swatch-none {
+  background: linear-gradient(to top right, transparent 45%, var(--error) 45%, var(--error) 55%, transparent 55%), var(--toolbar-bg);
+}
+
+.popover-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.table-picker {
+  display: grid;
+  gap: 3px;
+}
+
+#toolbar .table-picker-cell {
+  min-width: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 3px;
+  background: transparent;
+}
+
+#toolbar .table-picker-cell.lit {
+  border-color: var(--accent);
+  background: var(--button-active);
+}

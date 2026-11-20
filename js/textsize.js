@@ -7,7 +7,7 @@
  *   The box shows the size of the text where the cursor is.
  *
  * Sizes are in pixels and saved as <span style="font-size: 24px">.
- * Normal text is 16px (--note-font-size in styles.css).
+ * Normal text is 16px (--note-font-size in css/themes.css).
  */
 
 import { getActiveContent, elementAtCursor, notifyChanged } from './editing.js';

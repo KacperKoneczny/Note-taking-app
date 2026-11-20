@@ -1,0 +1,94 @@
+/*
+ * textboxes.css
+ * The text boxes you write in, with their move and resize handles
+ * (see js/textboxes.js). Formatting inside them is in formatting.css.
+ */
+
+.note {
+  position: absolute;
+  border-radius: 4px;
+}
+
+.note:hover {
+  outline: 1px dashed var(--note-hover-outline);
+}
+
+.note:focus-within {
+  outline: 1px solid var(--note-edit-outline);
+}
+
+.note.selected {
+  outline: 2px solid var(--accent);
+}
+
+.note-content {
+  min-height: calc(var(--note-font-size) * var(--note-line-height) + 4px);
+  padding: 2px 4px;
+  font-size: var(--note-font-size);
+  line-height: var(--note-line-height);
+  overflow-wrap: anywhere;
+  outline: none;
+  cursor: text;
+  user-select: text;
+}
+
+/* Move handle: a bar just above the box. The element is taller than the
+   visible bar so there's no gap between the box and the handle. */
+.note-handle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  height: 14px;
+  cursor: move;
+}
+
+.note-handle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--handle-color);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.note-handle:hover::before {
+  background: var(--handle-hover);
+}
+
+/* Resize handle: a strip along the right edge */
+.note-resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -5px;
+  width: 10px;
+  cursor: ew-resize;
+}
+
+.note-resize::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--handle-color);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+/* Show both handles while hovering, typing in, or selecting a box */
+.note:hover .note-handle::before,
+.note:focus-within .note-handle::before,
+.note.selected .note-handle::before,
+.note:hover .note-resize::after,
+.note:focus-within .note-resize::after,
+.note.selected .note-resize::after {
+  opacity: 1;
+}

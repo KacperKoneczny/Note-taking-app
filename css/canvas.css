@@ -1,0 +1,41 @@
+/*
+ * canvas.css
+ * The infinite canvas you pan and zoom (see js/canvas.js).
+ */
+
+#viewport {
+  position: fixed;
+  top: var(--toolbar-height);
+  left: var(--sidebar-width); /* starts to the right of the sidebar */
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  cursor: text;      /* hints that you can click anywhere to write */
+  user-select: none; /* dragging empty space pans instead of selecting text */
+}
+
+/* Holding Space or dragging shows a hand cursor everywhere, even over notes */
+#viewport.space-held,
+#viewport.space-held * {
+  cursor: grab !important;
+}
+
+#viewport.panning,
+#viewport.panning * {
+  cursor: grabbing !important;
+}
+
+body.sidebar-closed #viewport {
+  left: 0;
+}
+
+/* #world has no size of its own. Notes are placed inside it with left/top,
+   and the whole thing is moved and scaled with a CSS transform. */
+#world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+}

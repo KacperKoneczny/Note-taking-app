@@ -2,7 +2,7 @@
  * lists.js
  * Bullet lists, numbered lists and checklists.
  *
- * A checklist is a bullet list with class="checklist". styles.css draws a
+ * A checklist is a bullet list with class="checklist". css/formatting.css draws a
  * checkbox in front of each item, and a ticked item has data-checked="true".
  *
  *   Click a checkbox     tick or untick it

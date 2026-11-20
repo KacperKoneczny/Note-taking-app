@@ -1,0 +1,193 @@
+/*
+ * pages.css
+ * Everything for pages (see js/pages.js): the sidebar on the left, the page
+ * name in the toolbar, and the text field for renaming a page.
+ * The ☰ button hides the sidebar by adding class="sidebar-closed" to <body>.
+ */
+
+/* ==========================================================
+   Page name in the toolbar, and renaming
+   ========================================================== */
+/* The open page's name. If there isn't room, it's cut off with "…" (hover to see the full name). */
+#page-name {
+  min-width: 0;
+  padding: 4px 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#page-name[hidden] {
+  display: none;
+}
+
+/* The text field that appears while you rename a page (in the toolbar or the sidebar) */
+.rename-input {
+  min-width: 0;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.rename-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+#toolbar .rename-input {
+  width: 240px;
+}
+
+/* ==========================================================
+   Sidebar
+   ========================================================== */
+#sidebar {
+  position: fixed;
+  top: var(--toolbar-height);
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--toolbar-border);
+  user-select: none;
+  z-index: 5;
+}
+
+body.sidebar-closed #sidebar {
+  display: none;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 8px 8px 14px;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+#new-page {
+  height: 26px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#new-page:hover {
+  background: var(--button-hover);
+}
+
+#page-list {
+  flex: 1;
+  margin: 0;
+  padding: 0 6px 12px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+/* One page in the list */
+.page-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px;
+  border-radius: 6px;
+}
+
+.page-item:hover {
+  background: var(--button-hover);
+}
+
+/* The open page */
+.page-item.current {
+  background: var(--button-active);
+}
+
+/* While dragging a page up or down the list */
+.page-item.dragging {
+  opacity: 0.7;
+  outline: 1px dashed var(--accent);
+}
+
+body.reordering,
+body.reordering * {
+  cursor: grabbing !important;
+}
+
+.page-item-name {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.page-item-name[hidden] {
+  display: none;
+}
+
+.page-item .rename-input {
+  flex: 1;
+  height: 27px;
+  margin: 1px 2px;
+}
+
+/* The ✕ button only shows while hovering over the page */
+.page-item-delete {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.page-item:hover .page-item-delete,
+.page-item:focus-within .page-item-delete {
+  visibility: visible;
+}
+
+.page-item-delete:hover {
+  background: var(--button-bg);
+  color: var(--error);
+}
+
+/* No ✕ while renaming or dragging */
+.page-item:has(.rename-input) .page-item-delete,
+body.reordering .page-item-delete {
+  visibility: hidden;
+}

@@ -1,0 +1,18 @@
+/*
+ * base.css
+ * Page-wide basics: sizing, background, text color and font.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden; /* the canvas handles its own scrolling */
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
